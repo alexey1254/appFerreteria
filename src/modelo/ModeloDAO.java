@@ -1,20 +1,21 @@
-package modelo;
+package es.alejandro.programacion.modelo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alejandro
  */
 public class ModeloDAO {
 
-    private Producto registroProducto(ResultSet rs) throws SQLException {
+    private static Producto registroProducto(ResultSet rs) {
         Producto producto = new Producto();
         producto.setCodigo(rs.getInt("codigo"));
         producto.setNombre(rs.getString("nombre"));
-        return producto;
-    }
+
+    // }
 
     public static int numProductos() throws Exception {
         ResultSet consulta = Conexion.consulta("select count(*) as cantidad from producto;");
@@ -29,26 +30,31 @@ public class ModeloDAO {
         }
     }
 
-    public static Producto getProductos(int page, int tamanioPage) throws Exception {
+    public static List<Producto> getProductos(int page, int tamanioPage) throws Exception {
+        List<Producto> productos = new ArrayList<>();
         ModeloDAO modeloDAO = new ModeloDAO();
-        String sql = "Select * from producto where codigo=1";
+        String sql = "select * from producto limit" + (page - 1 * tamanioPage) + ", " + tamanioPage;
+        PreparedStatement ps = Conexion.getPreparedStatement(sql);
+        ps.execute();
+        ResultSet rs = ps.getResultSet();
+        while (rs.next()) {
+            productos.add(modeloDAO.registroProducto(rs));
+        }
+        return productos;
+    }
+
+    public static Producto getProducto(int codigo) throws Exception {
+
+        String sql = "Select * from producto where codigo=" + codigo;
         PreparedStatement ps = Conexion.getPreparedStatement(sql);
         ps.execute();
         ResultSet rs = ps.getResultSet();
         if (rs.next()) {
-            return modeloDAO.registroProducto(rs);
+            return ModeloDAO.registroProducto(rs);
         } else {
-            throw new Exception("getProductos. No ha podido realizarse la consulta");
+            throw new Exception("GetProducto. No ha podido realizarse la consulta");
         }
-    }
 
-    public static Producto getProducto(int codigo) {
-
-        try {
-
-        } catch (Exception e) {
-
-        }
     }
 
     public static int actualizarProducto(Producto producto) {
@@ -71,6 +77,9 @@ public class ModeloDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        getProductos(1, 2);
+        Conexion.getConexionBdFerreteria();
+
+        ResultSet consulta = Conexion.consulta("select count(nombre) from producto;");
+        System.out.println(consulta);
     }
 }
