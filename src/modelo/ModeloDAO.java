@@ -17,8 +17,7 @@ public class ModeloDAO {
     }
 
     public static int numProductos() throws Exception {
-        ResultSet consulta
-                = Conexion.consulta("select count(*) as cantidad from producto;");
+        ResultSet consulta = Conexion.consulta("select count(*) as cantidad from producto;");
         PreparedStatement ps = Conexion.getPreparedStatement("select * from producto");
         ps.execute();
         ps.getResultSet();
@@ -44,11 +43,11 @@ public class ModeloDAO {
     }
 
     public static Producto getProducto(int codigo) {
-        
+
         try {
-            
+
         } catch (Exception e) {
-            
+
         }
     }
 
@@ -72,10 +71,6 @@ public class ModeloDAO {
     }
 
     public static void main(String[] args) throws Exception {
-        Conexion.getConexionBdFerreteria();
-
-        ResultSet consulta = Conexion.consulta("select count(nombre) from producto;");
-
-        System.out.println(consulta.toString());
+        getProductos(1, 2);
     }
 }
