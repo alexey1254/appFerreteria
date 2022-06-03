@@ -15,7 +15,7 @@ productos.next()
 */
 
 /*** @author Javier Criado, 15/05/2022:22:15:04  ***/
-class Conexion {
+public class Conexion {
     private final static String BASE = "ferreteria";
 	private final static String USER = "ferreteria";
 	private final static String PASSWORD = "ferreteria2022";

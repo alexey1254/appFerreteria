@@ -42,6 +42,10 @@ public class VistaProducto extends javax.swing.JFrame {
         btnModificar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        primerProducto = new javax.swing.JButton();
+        siguienteProducto = new javax.swing.JButton();
+        anteriorProducto = new javax.swing.JButton();
+        ultimoProducto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +62,11 @@ public class VistaProducto extends javax.swing.JFrame {
         jLabel5.setText("Stock:");
 
         btnAlta.setText("Alta");
+        btnAlta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAltaActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +76,11 @@ public class VistaProducto extends javax.swing.JFrame {
         });
 
         btnBaja.setText("Baja");
+        btnBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBajaActionPerformed(evt);
+            }
+        });
 
         btnModificar.setText("Modificar");
 
@@ -79,6 +93,38 @@ public class VistaProducto extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         jLabel6.setText("Mantenimiento de Productos");
+
+        primerProducto.setText("<--");
+        primerProducto.setActionCommand("buscarPrimero");
+        primerProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                primerProductoActionPerformed(evt);
+            }
+        });
+
+        siguienteProducto.setText("Siguiente");
+        siguienteProducto.setActionCommand("buscarSiguiente");
+        siguienteProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteProductoActionPerformed(evt);
+            }
+        });
+
+        anteriorProducto.setText("Anterior");
+        anteriorProducto.setActionCommand("buscarAnterior");
+        anteriorProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anteriorProductoActionPerformed(evt);
+            }
+        });
+
+        ultimoProducto.setText("-->");
+        ultimoProducto.setActionCommand("buscarUltimo");
+        ultimoProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ultimoProductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,14 +160,27 @@ public class VistaProducto extends javax.swing.JFrame {
                                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtPrecioCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(82, 82, 82)
-                                .addComponent(btnAlta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBaja)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnModificar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnLimpiar))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(primerProducto)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(anteriorProducto))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(77, 77, 77)
+                                        .addComponent(btnAlta)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnBaja)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnModificar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnLimpiar))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(siguienteProducto)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ultimoProducto))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(275, 275, 275)
                         .addComponent(jLabel6)))
@@ -160,7 +219,13 @@ public class VistaProducto extends javax.swing.JFrame {
                     .addComponent(btnBaja)
                     .addComponent(btnModificar)
                     .addComponent(btnLimpiar))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(primerProducto)
+                    .addComponent(ultimoProducto)
+                    .addComponent(siguienteProducto)
+                    .addComponent(anteriorProducto))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -192,6 +257,30 @@ public class VistaProducto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"El código está vacío");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void primerProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primerProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_primerProductoActionPerformed
+
+    private void siguienteProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_siguienteProductoActionPerformed
+
+    private void anteriorProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anteriorProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_anteriorProductoActionPerformed
+
+    private void ultimoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ultimoProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ultimoProductoActionPerformed
+
+    private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAltaActionPerformed
+
+    private void btnBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBajaActionPerformed
     
     /**
      * @param args the command line arguments
@@ -267,11 +356,16 @@ public class VistaProducto extends javax.swing.JFrame {
         this.btnModificar.addActionListener(controlador);
         this.btnBuscar.addActionListener(controlador);
         this.txtBuscar.addActionListener(controlador);
+        this.primerProducto.addActionListener(controlador);
+        this.ultimoProducto.addActionListener(controlador);
+        this.siguienteProducto.addActionListener(controlador);
+        this.anteriorProducto.addActionListener(controlador);
     }
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton anteriorProducto;
     private javax.swing.JButton btnAlta;
     private javax.swing.JButton btnBaja;
     private javax.swing.JButton btnBuscar;
@@ -283,12 +377,15 @@ public class VistaProducto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JButton primerProducto;
+    private javax.swing.JButton siguienteProducto;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecioCompra;
     private javax.swing.JTextField txtPrecioVenta;
     private javax.swing.JTextField txtStock;
+    private javax.swing.JButton ultimoProducto;
     // End of variables declaration//GEN-END:variables
 
     static {

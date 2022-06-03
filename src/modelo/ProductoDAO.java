@@ -135,73 +135,84 @@ public class ProductoDAO {
         ps.setInt(1, codigo);
         return ps.executeUpdate();
     }
-    public static void _main(String args[]) throws Exception {
-        //prueba método numProductos
-        System.out.println(ProductoDAO.numProductos());
-        //prueba método getProductos
-        List<Producto> prods=ProductoDAO.getProductos(1,20);        
-        for(Producto p:prods) {
-            System.out.println(p);
+    
+    /**
+     * Busca el siguiente producto
+     * @param codigo
+     * @return
+     * @throws Exception 
+     */
+    public static Producto getSiguienteProducto(int codigo) throws Exception {
+        String sql="select * from producto where codigo > ? order by codigo asc limit 1";
+        PreparedStatement ps=Conexion.getPreparedStatement(sql);
+        ps.setInt(1, codigo);
+        if (!ps.execute()) {
+            throw new Exception("getProducto: Error, no hay productos registrados.");
         }
-        //prueba método getProducto
-        Producto p=ProductoDAO.getProducto(30);
-        //prueba método actualizarProducto
-        System.out.println(p);
-        p.setNombre("Estantería 8");p.setPrecioCompra(25.5);
-        p.setPrecioVenta(33.75);p.setStock(46);
-        System.out.println(p);
-        System.out.println(ProductoDAO.actualizarProducto(p));
-        //prueba método insertarProducto
-        System.out.println(ProductoDAO.borrarProducto(1112));
-        p.setCodigo(1112);
-        p.setNombre("Estantería 9");
-        ProductoDAO.insertarProducto(p);
-        //prueba método borrarProducto
-        System.out.println(ProductoDAO.borrarProducto(p.getCodigo()));
+        ResultSet rs=ps.getResultSet();
+        if (rs.next()) {
+            return ProductoDAO.registroProducto(rs);
+        }
+        //throw new Exception("getProducto: Error código de producto "+codigo+" no encontrado.");
+        return null; // devolvemos null si el producto no se encuentra
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static void main(String args[]) throws Exception {
-        Producto p=new Producto(1007,"P1006",0,0,0);
-        ProductoDAO.insertarProducto(p);
+    /**
+     * Busca el anterior producto
+     * @param codigo
+     * @return
+     * @throws Exception 
+     */
+    public static Producto getAnteriorProducto(int codigo) throws Exception {
+        String sql="select * from producto where codigo < ? order by codigo desc limit 1";
+        PreparedStatement ps=Conexion.getPreparedStatement(sql);
+        ps.setInt(1, codigo);
+        if (!ps.execute()) {
+            throw new Exception("getProducto: Error, no hay productos registrados.");
+        }
+        ResultSet rs=ps.getResultSet();
+        if (rs.next()) {
+            return ProductoDAO.registroProducto(rs);
+        }
+        //throw new Exception("getProducto: Error código de producto "+codigo+" no encontrado.");
+        return null; // devolvemos null si el producto no se encuentra
     }
     
+    /**
+     * Consigue el primer producto de la base de datos
+     * @return Producto, El primer producto de la base de datos
+     * @throws Exception 
+     */
+    public static Producto getPrimerProducto() throws Exception {
+        String sql="SELECT * FROM producto order by codigo asc limit 1";
+        PreparedStatement ps=Conexion.getPreparedStatement(sql);
+        if (!ps.execute()) {
+            throw new Exception("getProducto: Error, no hay productos registrados.");
+        }
+        ResultSet rs=ps.getResultSet();
+        if (rs.next()) {
+            return ProductoDAO.registroProducto(rs);
+        }
+        //throw new Exception("getProducto: Error código de producto "+codigo+" no encontrado.");
+        return null; // devolvemos null si el producto no se encuentra
+    }
+    /**
+     * Consigue el ultimo producto de la base de datos
+     * @return Producto, El ultimo producto de la tabla
+     * @throws SQLException
+     * @throws Exception 
+     */
+    public static Producto getUltimoProducto() throws SQLException, Exception {
+        String sql="SELECT * FROM producto order by codigo desc limit 1";
+        PreparedStatement ps=Conexion.getPreparedStatement(sql);
+        if (!ps.execute()) {
+            throw new Exception("getProducto: Error, no hay productos registrados.");
+        }
+        ResultSet rs=ps.getResultSet();
+        if (rs.next()) {
+            return ProductoDAO.registroProducto(rs);
+        }
+        //throw new Exception("getProducto: Error código de producto "+codigo+" no encontrado.");
+        return null; // devolvemos null si el producto no se encuentra
+    }
 }

@@ -157,6 +157,61 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje(ex.getMessage());
         }
     }
+    public void buscarPrimero() {
+        try {
+            Producto producto;
+            producto = ProductoDAO.getPrimerProducto();
+                if (producto==null) {
+                    this.vista.mostrarMensaje("Producto no encontrado");
+                } else {
+                    this.vista.setCodigo(""+producto.getCodigo());
+                    this.vista.setNombre(producto.getNombre());
+                    this.vista.setPrecioCompra(""+producto.getPrecioCompra());
+                    this.vista.setPrecioVenta(""+producto.getPrecioVenta());
+                    this.vista.setStock(""+producto.getStock());
+                }
+        } catch (Exception ex) {
+            this.vista.mostrarMensaje("No hay un primer producto");
+        }
+    }
+    public void buscarUltimo() {
+        try {
+            Producto producto;
+            producto = ProductoDAO.getUltimoProducto();
+                if (producto==null) {
+                    this.vista.mostrarMensaje("Producto no encontrado");
+                } else {
+                    this.vista.setCodigo(""+producto.getCodigo());
+                    this.vista.setNombre(producto.getNombre());
+                    this.vista.setPrecioCompra(""+producto.getPrecioCompra());
+                    this.vista.setPrecioVenta(""+producto.getPrecioVenta());
+                    this.vista.setStock(""+producto.getStock());
+                }
+        } catch (Exception ex) {
+            this.vista.mostrarMensaje("No hay un ultimo producto");
+        }
+    }
+        public void anteriorProducto() {
+            try {
+                int codigo=Integer.parseInt(this.vista.getBuscar());
+                Producto p;
+                p=ProductoDAO.getAnteriorProducto(codigo);
+                if (p==null) {
+                    this.vista.mostrarMensaje("No hay mas productos anteriores");
+                } else {
+                    this.vista.setCodigo(""+p.getCodigo());
+                    this.vista.setNombre(p.getNombre());
+                    this.vista.setPrecioCompra(""+p.getPrecioCompra());
+                    this.vista.setPrecioVenta(""+p.getPrecioVenta());
+                    this.vista.setStock(""+p.getStock());
+                }
+            } catch (java.lang.NumberFormatException ex) {
+                this.vista.mostrarMensaje("Error el código del producto a buscar no es correcto");
+            } catch (Exception ex) {
+                this.vista.mostrarMensaje(ex.getMessage());
+            }
+        }
+    
     
     @Override
     public void actionPerformed(ActionEvent evento)  {
@@ -166,6 +221,14 @@ public class ControladorProducto implements ActionListener {
             this.bajaProducto();
         } else if (evento.getActionCommand().equals("Modificar")) {
             this.modificarProducto();
+        } else if (evento.getActionCommand().equals("buscarPrimero")) { //TODO: Enlazarlo a la vista
+            this.buscarPrimero();
+        } else if (evento.getActionCommand().equals("buscarUltimo")) {
+            this.buscarUltimo();
+        } else if (evento.getActionCommand().equals("Anterior")) {
+            this.anteriorProducto();
+        } else if (evento.getActionCommand().equals("Siguiente")) {
+            
         } else { // if (evento.getActionCommand().equals("Buscar"))
             this.buscarProducto();
         }
