@@ -6,12 +6,12 @@ GRANT ALL ON ferreteria.* TO 'ferreteria'@'localhost';
 use ferreteria;
 
 CREATE TABLE producto (
-    codigo INT NOT NULL AUTO_INCREMENT,
-    nombre varchar(20) NOT NULL UNIQUE,
-    precio_compra decimal(8,2) NOT NULL,
-    precio_venta decimal(8,2) NOT NULL,
-    stock int NOT NULL,
-    PRIMARY KEY (codigo)
+  codigo INT NOT NULL AUTO_INCREMENT,
+  nombre varchar(20) NOT NULL UNIQUE,
+  precio_compra decimal(8,2) NOT NULL,
+  precio_venta decimal(8,2) NOT NULL,
+  stock int NOT NULL,
+  PRIMARY KEY (codigo)
 ) ENGINE=InnoDB;
 
 INSERT INTO producto VALUES
@@ -50,12 +50,11 @@ CREATE DEFINER=ferreteria@localhost PROCEDURE
 modificarProducto(codigo CHAR(5), nombre VARCHAR(20), precio_compra DECIMAL(8,2),
 precio_venta DECIMAL(8,2), stock INT)
 BEGIN
-    UPDATE producto SET 
-        producto.codigo=codigo, producto.nombre=nombre,
-        producto.precio_compra=precio_compra,
-        producto.precio_venta=precio_venta,
-        producto.stock=stock
-    WHERE producto.codigo=codigo;
+    UPDATE producto SET producto.codigo=codigo, producto.nombre=nombre,
+                        producto.precio_compra=precio_compra,
+                        producto.precio_venta=precio_venta,
+                        producto.stock=stock
+           WHERE producto.codigo=codigo;
 END$$
 DELIMITER ;
 
