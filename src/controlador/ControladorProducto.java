@@ -1,10 +1,8 @@
-package FerreteriaMVC.controlador;
-import FerreteriaMVC.modelo.*;
+package controlador;
+import modelo.*;
 import java.awt.event.*;
-import FerreteriaMVC.vista.VistaProducto;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import FerreteriaMVC.vista.InterfazVistaProducto;
+import vista.VistaProducto;
+
 
 /*** @author Javier Criado, 23/05/2022:19:51:00  ***/
 public class ControladorProducto implements ActionListener {
@@ -12,6 +10,11 @@ public class ControladorProducto implements ActionListener {
     public ControladorProducto(VistaProducto vista) {
         this.vista=vista;
     }
+    
+    /**
+     * Comprueba si todos los campos estan vacíos
+     * @return True, si todos están vacios
+     */
     private boolean camposVacios() {
         return  this.vista.getCodigo().length()==0 ||
                 this.vista.getNombre().length()==0 ||
@@ -20,6 +23,8 @@ public class ControladorProducto implements ActionListener {
                 this.vista.getStock().length()==0;
                 
     }
+    
+    
     public Producto getVistaProducto() {
         int codigo; String nombre; double precioCompra, precioVenta; 
         int stock;
@@ -50,6 +55,8 @@ public class ControladorProducto implements ActionListener {
         }
         return new Producto(codigo,nombre,precioCompra,precioVenta,stock);
     }
+    
+    
     public void altaModificacionProducto(String mensaje) {
         if (!camposVacios()) {
             Producto p=this.getVistaProducto();
@@ -75,6 +82,10 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje("Error alguno de los campos está vacío");
         }
     }
+    
+    /**
+     * Cuando un producto es introducido correctamente
+     */
     public void altaProducto() {
         this.altaModificacionProducto("introducido");
     }
@@ -98,6 +109,10 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje("Error alguno de los campos está vacío");
         }
     }
+    
+    /**
+     * Modifica un producto
+     */
     public void _modificarProducto() {
         if (!camposVacios()) {
             Producto p=this.getVistaProducto();
@@ -117,6 +132,9 @@ public class ControladorProducto implements ActionListener {
         
     }
     
+    /**
+     * Busca un producto
+     */
     public void buscarProducto() {
         if (this.vista.getBuscar().length()!=0) {
             try {
@@ -142,6 +160,10 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje("El campo de búsqueda está vacío");
         }
     }
+    
+    /**
+     * Le da de baja a un producto
+     */
     public void bajaProducto() {
         try {
             int codigo=Integer.parseInt(this.vista.getCodigo());
@@ -157,6 +179,10 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje(ex.getMessage());
         }
     }
+    
+    /**
+     * Busca el primer producto de la base de datos
+     */
     public void buscarPrimero() {
         try {
             Producto producto;
@@ -174,6 +200,10 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje("No hay un primer producto");
         }
     }
+    
+    /**
+     * Busca el ultimo producto de la base de datos
+     */
     public void buscarUltimo() {
         try {
             Producto producto;
@@ -191,26 +221,38 @@ public class ControladorProducto implements ActionListener {
             this.vista.mostrarMensaje("No hay un ultimo producto");
         }
     }
-        public void anteriorProducto() {
-            try {
-                int codigo=Integer.parseInt(this.vista.getBuscar());
-                Producto p;
-                p=ProductoDAO.getAnteriorProducto(codigo);
-                if (p==null) {
-                    this.vista.mostrarMensaje("No hay mas productos anteriores");
-                } else {
-                    this.vista.setCodigo(""+p.getCodigo());
-                    this.vista.setNombre(p.getNombre());
-                    this.vista.setPrecioCompra(""+p.getPrecioCompra());
-                    this.vista.setPrecioVenta(""+p.getPrecioVenta());
-                    this.vista.setStock(""+p.getStock());
-                }
-            } catch (java.lang.NumberFormatException ex) {
-                this.vista.mostrarMensaje("Error el código del producto a buscar no es correcto");
-            } catch (Exception ex) {
-                this.vista.mostrarMensaje(ex.getMessage());
+    
+    /**
+     * Busca el producto anterior o posterior
+     * @param anteriorOposterior -1 anterior, otro numero, posterior
+     */
+    public void anteriorOSiguienteProducto(int anteriorOposterior) {
+        try {
+            int codigo=Integer.parseInt(this.vista.getCodigo());
+            Producto producto = null;
+            String mensaje = "";
+            if(anteriorOposterior==-1) {
+                producto=ProductoDAO.getAnteriorProducto(codigo);
+                mensaje = "No hay más productos anteriores.";
+            } else {
+                producto= ProductoDAO.getSiguienteProducto(codigo);
+                mensaje = "No hay mas productos posteriores";
             }
+            if (producto==null) {
+                this.vista.mostrarMensaje(mensaje);
+            } else {
+                this.vista.setCodigo(""+producto.getCodigo());
+                this.vista.setNombre(producto.getNombre());
+                this.vista.setPrecioCompra(""+producto.getPrecioCompra());
+                this.vista.setPrecioVenta(""+producto.getPrecioVenta());
+                this.vista.setStock(""+producto.getStock());
+            }
+        } catch (java.lang.NumberFormatException ex) {
+            this.vista.mostrarMensaje("Error el código del producto a buscar no es correcto");
+        } catch (Exception ex) {
+            this.vista.mostrarMensaje(ex.getMessage());
         }
+    }
     
     
     @Override
@@ -221,18 +263,22 @@ public class ControladorProducto implements ActionListener {
             this.bajaProducto();
         } else if (evento.getActionCommand().equals("Modificar")) {
             this.modificarProducto();
-        } else if (evento.getActionCommand().equals("buscarPrimero")) { //TODO: Enlazarlo a la vista
+        } else if (evento.getActionCommand().equals("buscarPrimero")) {
             this.buscarPrimero();
         } else if (evento.getActionCommand().equals("buscarUltimo")) {
             this.buscarUltimo();
-        } else if (evento.getActionCommand().equals("Anterior")) {
-            this.anteriorProducto();
-        } else if (evento.getActionCommand().equals("Siguiente")) {
-            
+        } else if (evento.getActionCommand().equals("buscarAnterior")) {
+            this.anteriorOSiguienteProducto(-1);
+        } else if (evento.getActionCommand().equals("buscarSiguiente")) {
+            this.anteriorOSiguienteProducto(1);
         } else { // if (evento.getActionCommand().equals("Buscar"))
             this.buscarProducto();
         }
     }
+    
+    /**
+     * Inicia la app con interfaz grafica
+     */
     public void inicia() {
         this.vista.setControlador(this);
         this.vista.setVisible(true);

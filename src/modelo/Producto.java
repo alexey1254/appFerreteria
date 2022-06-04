@@ -1,4 +1,4 @@
-package FerreteriaMVC.modelo;
+package modelo;
 
 
 /*** @author Javier Criado, 15/05/2022:20:04:49  ***/

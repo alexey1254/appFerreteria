@@ -1,4 +1,4 @@
-package FerreteriaMVC.modelo;
+package modelo;
 import java.sql.*;
 import java.util.*;
 /*** @author Javier Criado, 15/05/2022:20:03:14  ***/
@@ -69,7 +69,7 @@ public class ProductoDAO {
     /**
      * Obtiene el registro producto con clave codigo y lo devuelve como
      * un objeto de la clase Producto
-     * @param codigo
+     * @param codigo del producto
      * @return el producto de la tabla de productos cuyo clave sea codigo, null si no hay éxito
      * @throws Exception 
      */
@@ -91,36 +91,36 @@ public class ProductoDAO {
     /**
      * Actualiza el producto cuya clave sea p.getCodigo() con los datos
      * que conlleva el objeto p en sus variables miembro
-     * @param p producto a actualizar
+     * @param producto producto a actualizar
      * @return 0 si error 1 si éxito (número de filas afectadas)
      * @throws Exception 
      */
-    public static int actualizarProducto(Producto p) throws Exception {
+    public static int actualizarProducto(Producto producto) throws Exception {
         String sql="UPDATE producto SET codigo=?, nombre=?, precio_compra=?, precio_venta=?, stock=? WHERE codigo=?";
         PreparedStatement ps=Conexion.getPreparedStatement(sql);
-        ps.setInt(1,p.getCodigo());
-        ps.setString(2,p.getNombre());
-        ps.setDouble(3,p.getPrecioCompra());
-        ps.setDouble(4,p.getPrecioVenta());
-        ps.setInt(5,p.getStock());
-        ps.setInt(6,p.getCodigo());
+        ps.setInt(1,producto.getCodigo());
+        ps.setString(2,producto.getNombre());
+        ps.setDouble(3,producto.getPrecioCompra());
+        ps.setDouble(4,producto.getPrecioVenta());
+        ps.setInt(5,producto.getStock());
+        ps.setInt(6,producto.getCodigo());
         return ps.executeUpdate();
     }
     
     /**
      * Inserta un nuevo registro con los datos del Producto p
-     * @param p producto para insertar
+     * @param producto producto para insertar
      * @return 0 si error 1 si éxito (número de filas afectadas)
      * @throws Exception 
      */
-    public static int insertarProducto(Producto p) throws Exception {
+    public static int insertarProducto(Producto producto) throws Exception {
         String sql="INSERT INTO producto VALUES(?,?,?,?,?)";
         PreparedStatement ps=Conexion.getPreparedStatement(sql);
-        ps.setInt(1,p.getCodigo());
-        ps.setString(2,p.getNombre());
-        ps.setDouble(3,p.getPrecioCompra());
-        ps.setDouble(4,p.getPrecioVenta());
-        ps.setInt(5,p.getStock());
+        ps.setInt(1,producto.getCodigo());
+        ps.setString(2,producto.getNombre());
+        ps.setDouble(3,producto.getPrecioCompra());
+        ps.setDouble(4,producto.getPrecioVenta());
+        ps.setInt(5,producto.getStock());
         return ps.executeUpdate();
     }
     /**
@@ -181,7 +181,7 @@ public class ProductoDAO {
     /**
      * Consigue el primer producto de la base de datos
      * @return Producto, El primer producto de la base de datos
-     * @throws Exception 
+     * @throws Exception, En caso de que no haya productos registrados
      */
     public static Producto getPrimerProducto() throws Exception {
         String sql="SELECT * FROM producto order by codigo asc limit 1";
@@ -198,9 +198,9 @@ public class ProductoDAO {
     }
     /**
      * Consigue el ultimo producto de la base de datos
-     * @return Producto, El ultimo producto de la tabla
+     * @return Producto, El ultimo producto de la tabla // Null si no se encuentra nada
      * @throws SQLException
-     * @throws Exception 
+     * @throws Exception, En caso de que no haya productos registrados
      */
     public static Producto getUltimoProducto() throws SQLException, Exception {
         String sql="SELECT * FROM producto order by codigo desc limit 1";

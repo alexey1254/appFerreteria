@@ -1,4 +1,4 @@
-package FerreteriaMVC.modelo;
+package modelo;
 
 import java.sql.*;
 
